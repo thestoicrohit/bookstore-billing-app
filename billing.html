@@ -1,0 +1,126 @@
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Billing</title>
+  <style>
+    :root{--brand:#4a86f7;}
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;background:#f4f4f9;margin:0;padding:20px}
+    .container{max-width:900px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+    h1{margin:0 0 16px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .row-3{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px}
+    label{font-size:13px;color:#555}
+    input{width:100%;padding:10px;border:1px solid #d9d9d9;border-radius:8px}
+    .btn{border:0;padding:12px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn-primary{background:var(--brand);color:#fff}
+    .btn-ghost{background:#eef2ff;color:#2b3a67}
+    .btn-danger{background:#ffe8e8;color:#b00020}
+    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+    table{width:100%;border-collapse:collapse;margin-top:12px;border:1px solid #eee}
+    th,td{padding:10px;border-bottom:1px solid #eee;text-align:center}
+    th{background:#fafbff}
+    tr:hover{background:#fcfcff}
+    .totals{margin-top:12px;font-weight:700;font-size:16px}
+    .muted{font-weight:500;color:#444}
+    /* Toasts */
+    #toast{position:fixed;right:18px;bottom:18px;display:none;background:#111;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+    /* Print */
+    @media print{
+      .no-print{display:none !important}
+      body{background:#fff;padding:0}
+      .container{box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="billArea">
+  <h1>Book Billing</h1>
+
+  <!-- Customer + Bill Info -->
+  <div class="row">
+    <div>
+      <label>Customer Name</label>
+      <input id="customerName" placeholder="Enter customer name"/>
+    </div>
+    <div>
+      <label>Phone</label>
+      <input id="customerPhone" placeholder="Enter phone"/>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <div>
+      <label>Bill No.</label>
+      <input id="billNo" readonly/>
+    </div>
+    <div>
+      <label>Date</label>
+      <input id="billDate" readonly/>
+    </div>
+  </div>
+
+  <!-- Add Book -->
+  <h3 style="margin-top:22px">Add Item</h3>
+  <div class="row-3">
+    <div>
+      <label>Book Name</label>
+      <input id="bookName" placeholder="e.g. English"/>
+    </div>
+    <div>
+      <label>Price</label>
+      <input id="price" type="number" placeholder="e.g. 100"/>
+    </div>
+    <div>
+      <label>Quantity</label>
+      <input id="quantity" type="number" placeholder="e.g. 2"/>
+    </div>
+    <div>
+      <label>Discount %</label>
+      <input id="discount" type="number" placeholder="0 - 100"/>
+    </div>
+  </div>
+
+  <div class="btn-row no-print">
+    <button class="btn btn-primary" onclick="addBook()">Add Book</button>
+    <button class="btn btn-ghost" onclick="generateBill()">Generate Final Bill</button>
+    <button class="btn btn-ghost" onclick="printBill()">Print</button>
+    <button class="btn btn-ghost" onclick="exportPDF()">Export PDF</button>
+    <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+  </div>
+
+  <!-- Table -->
+  <table id="billTable" style="display:none">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Book</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Discount %</th>
+        <th>Final Price</th>
+        <th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Totals -->
+  <div class="totals" id="totals"></div>
+  <div class="muted" id="footerNote" style="margin-top:6px"></div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- libs for PDF -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<!-- App JS -->
+<script src="billing.js"></script>
+</body>
+</html>
